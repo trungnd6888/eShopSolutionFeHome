@@ -10,6 +10,7 @@ import { styled } from '@mui/system';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
+import postImage from '../../../../../../../images/post01.jpg';
 
 PostItem.propTypes = {
   item: PropTypes.object,
@@ -31,7 +32,7 @@ export default function PostItem({ item }) {
   return (
     <Card sx={{ mb: 1, borderRadius: 4 }}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image="src/images/post01.jpg" alt="green iguana" />
+        <CardMedia component="img" height="140" image={postImage} alt="green iguana" />
         <CardContent sx={{ minHeight: 100 }}>
           <Typography variant="caption" color="text.secondary">
             {`${item.createDate.getDate()} tháng ${item.createDate.getMonth()} ${item.createDate.getUTCFullYear()}`}

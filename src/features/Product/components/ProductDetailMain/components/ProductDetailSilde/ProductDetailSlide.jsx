@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import detailImage from '../../../../../../../images/banner01.jpg';
+import detailImage01 from '../../../../../../../images/poster01.png';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -32,52 +34,52 @@ export default function App() {
       >
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/banner01.jpg" />
+            <img src={detailImage} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/poster01.png" />
+            <img src={detailImage01} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/banner01.jpg" />
+            <img src={detailImage} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/poster01.png" />
+            <img src={detailImage01} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/banner01.jpg" />
+            <img src={detailImage} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/poster01.png" />
+            <img src={detailImage01} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/banner01.jpg" />
+            <img src={detailImage} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/poster01.png" />
+            <img src={detailImage01} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/banner01.jpg" />
+            <img src={detailImage} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="swiper-zoom-container">
-            <img src="../src/images/poster01.png" />
+            <img src={detailImage01} />
           </div>
         </SwiperSlide>
       </Swiper>
@@ -92,34 +94,34 @@ export default function App() {
         className="mySwiper mySwiper1"
       >
         <SwiperSlide>
-          <img src="../src/images/banner01.jpg" />
+          <img src={detailImage} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/poster01.png" />
+          <img src={detailImage01} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/banner01.jpg" />
+          <img src={detailImage} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/poster01.png" />
+          <img src={detailImage01} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/banner01.jpg" />
+          <img src={detailImage} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/poster01.png" />
+          <img src={detailImage01} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/banner01.jpg" />
+          <img src={detailImage} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/poster01.png" />
+          <img src={detailImage01} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/banner01.jpg" />
+          <img src={detailImage} />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="../src/images/poster01.png" />
+          <img src={detailImage01} />
         </SwiperSlide>
       </Swiper>
     </>

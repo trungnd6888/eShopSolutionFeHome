@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Avatar, Box, Container, Paper, Stack, Typography } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import PostDetailShareButton from './components/PostDetailShareButton/PostDetailShareButton';
+import postImage from '../../../../../images/post01.jpg';
+import avatarImage from '../../../../../images/avatar.jpg';
 
 PostDetailMain.propTypes = {};
 
@@ -10,10 +12,7 @@ function PostDetailMain(props) {
   return (
     <Paper sx={{ overflow: 'hidden', borderRadius: 4 }}>
       <Box sx={{ position: 'relative', mb: 3 }}>
-        <img
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          src="../src/images/post01.jpg"
-        />
+        <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={postImage} />
 
         <Typography
           sx={(theme) => ({
@@ -38,7 +37,7 @@ function PostDetailMain(props) {
           }}
           direction="row"
         >
-          <Avatar sx={{ mr: 1 }} alt="Remy Sharp" src="../src/images/avatar.jpg" />
+          <Avatar sx={{ mr: 1 }} alt="Remy Sharp" src={avatarImage} />
           <Stack>
             <Typography sx={(theme) => ({ color: theme.palette.common.white })} variant="subtitle2">
               Nguyễn Đức Trung
@@ -65,7 +64,7 @@ function PostDetailMain(props) {
           </Typography>
           <img
             style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 16 }}
-            src="../src/images/post01.jpg"
+            src={postImage}
           />
           <Typography>
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam sint fuga recusandae
@@ -83,7 +82,7 @@ function PostDetailMain(props) {
           </Typography>
           <img
             style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 16 }}
-            src="../src/images/post01.jpg"
+            src={postImage}
           />
           <Typography>
             Lorem ipsum dolor sit, amet consectetur adipisicing elit.

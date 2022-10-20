@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import postImage from '../../../../../../../images/post01.jpg';
 
 const CustomizeTypography = styled(Typography)({
   '&:hover': { textDecoration: 'underline' },
@@ -22,12 +23,7 @@ export default function PostDetailFooterItem() {
   return (
     <Card sx={{ mb: 1, borderRadius: 4 }}>
       <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image="../src/images/post01.jpg"
-          alt="green iguana"
-        />
+        <CardMedia component="img" height="140" image={postImage} alt="green iguana" />
         <CardContent>
           <Typography variant="caption" color="text.secondary">
             22 tháng 10

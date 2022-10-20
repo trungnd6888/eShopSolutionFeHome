@@ -7,10 +7,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
+import bannerImage from '../../../../../images/banner01.jpg';
+import posterImage from '../../../../../images/poster01.png';
 
 const CustomizeBox = styled(Box)`
   height: 280px;
-  background-image: url('src/images/banner01.jpg');
+  background-image: url(${bannerImage});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -70,11 +72,7 @@ function Banner() {
                 justifyContent: 'center',
               }}
             >
-              <img
-                width="100%"
-                style={{ padding: 1, minWidth: 150 }}
-                src="src/images/poster01.png"
-              />
+              <img width="100%" style={{ padding: 1, minWidth: 150 }} src={posterImage} />
             </Box>
           </Box>
         </Grid>

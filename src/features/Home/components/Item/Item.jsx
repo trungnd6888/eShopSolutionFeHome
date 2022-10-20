@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography';
 import { Box, Button, CardActionArea, CardActions, Chip } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Link } from 'react-router-dom';
+import productImage from '../../../../../images/Rolex01.jpg';
 
 export default function Item() {
   return (
     <Card sx={{ mb: 1, borderRadius: 4 }}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image="src/images/Rolex01.jpg" alt="green iguana" />
+        <CardMedia component="img" height="140" image={productImage} alt="green iguana" />
         <CardContent sx={{ minHeight: 120 }}>
           <Typography
             sx={{
