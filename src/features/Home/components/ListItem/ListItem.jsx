@@ -1,11 +1,10 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 import React from 'react';
 // Import Swiper React components
-import { Autoplay, Pagination } from 'swiper';
+import { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/pagination';
 import Item from '../Item/Item';
 import { PropTypes } from 'prop-types';
 
@@ -31,22 +30,19 @@ function ListItem({ title }) {
             }}
           >
             <Swiper
-              pagination={{
-                clickable: true,
-              }}
               className="mySwiper"
               autoplay={{
                 delay: 2500,
                 disableOnInteraction: false,
               }}
-              modules={[Pagination, Autoplay]}
+              modules={[Autoplay]}
               spaceBetween={24}
               slidesPerView={4}
               breakpoints={{
                 0: {
                   slidesPerView: 1,
                 },
-                400: {
+                500: {
                   slidesPerView: 2,
                   spaceBetween: 24,
                 },
