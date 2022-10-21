@@ -4,6 +4,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, Button, Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { formatter } from '../../../../../../utils/formatNumber';
 import { PropTypes } from 'prop-types';
+import cartImage from '../../../../../../../images/product01.png';
 import React from 'react';
 
 CartRow.propTypes = {
@@ -54,12 +55,7 @@ function CartRow({ onTotal }) {
           <Grid container>
             <Grid item xs={12} sm={3}>
               <Box sx={{ height: { xs: 230, sm: 130 } }}>
-                <img
-                  width="100%"
-                  height="100%"
-                  style={{ objectFit: 'cover' }}
-                  src="../src/images/product01.png"
-                />
+                <img width="100%" height="100%" style={{ objectFit: 'cover' }} src={cartImage} />
               </Box>
             </Grid>
             <Grid item xs={12} sm={9}>
