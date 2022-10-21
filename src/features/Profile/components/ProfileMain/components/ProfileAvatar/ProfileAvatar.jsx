@@ -2,11 +2,12 @@ import styled from '@emotion/styled';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { alpha, Paper, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
+import avatarImage from '../../../../../../../images/avatar.jpg';
 
 ProfileAvatar.propTypes = {};
 
 function ProfileAvatar(props) {
-  const [imageUrl, setImageUrl] = React.useState('./src/images/avatar.jpg');
+  const [imageUrl, setImageUrl] = React.useState(avatarImage);
 
   const handleChange = (e) => {
     const url = URL.createObjectURL(e.target.files[0]);
