@@ -7,6 +7,7 @@ import { alpha, styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import * as React from 'react';
 import { PropTypes } from 'prop-types';
+import debounce from 'lodash/debounce';
 
 ProductToolBar.propTypes = {
   onSearchChange: PropTypes.func,
@@ -74,14 +75,14 @@ const selectList = [
     value: 2,
     label: 'Giá: Cao-Thấp',
   },
-  // {
-  //   value: 3,
-  //   label: 'Mới nhất',
-  // },
-  // {
-  //   value: 4,
-  //   label: 'Cũ nhất',
-  // },
+  {
+    value: 3,
+    label: 'Mới nhất',
+  },
+  {
+    value: 4,
+    label: 'Cũ nhất',
+  },
 ];
 
 function ProductToolBar({ onSearchChange, onSelectChange, selected, onOpenFilter }) {
@@ -89,9 +90,9 @@ function ProductToolBar({ onSearchChange, onSelectChange, selected, onOpenFilter
     if (onSelectChange) onSelectChange(e.target.value);
   };
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = debounce((e) => {
     if (onSearchChange) onSearchChange({ keyword: e.target.value });
-  };
+  }, 300);
 
   const handleOpenFilter = () => {
     if (onOpenFilter) onOpenFilter();

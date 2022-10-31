@@ -2,10 +2,18 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, Chip, Divider, Rating, Stack, Typography } from '@mui/material';
 import React from 'react';
+import PropTypes from 'prop-types';
+import { formatter } from '../../../../../../utils/formatNumber';
 
-ProductDetailInfo.propTypes = {};
+ProductDetailInfo.propTypes = {
+  product: PropTypes.object,
+};
 
-function ProductDetailInfo(props) {
+ProductDetailInfo.defaultValues = {
+  product: null,
+};
+
+function ProductDetailInfo({ product }) {
   const [value, setValue] = React.useState(2);
   const [number, setNumber] = React.useState(1);
 
@@ -15,7 +23,6 @@ function ProductDetailInfo(props) {
 
   const handleSub = () => {
     if (number > 1) setNumber((pre) => pre - 1);
-
     return;
   };
 
@@ -23,13 +30,13 @@ function ProductDetailInfo(props) {
     <Stack spacing={2}>
       <Stack direction="row" spacing={1}>
         <Chip sx={{ borderRadius: 4 }} size="small" label="Có hàng" color="success" />
-        <Chip sx={{ borderRadius: 4 }} size="small" label="Đồng hồ nam" />
+        {product?.categories?.map((category) => (
+          <Chip sx={{ borderRadius: 4 }} size="small" label={category.name} key={category.id} />
+        ))}
       </Stack>
-      <Typography variant="h5">Đồng hồ Rolex chính hãng</Typography>
-      <Typography variant="body1">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, mollitia error.
-      </Typography>
-      <Typography variant="h5">1.000.000 &#8363;</Typography>
+      <Typography variant="h5">{product?.name}</Typography>
+      <Typography variant="body1">{product?.detail}</Typography>
+      <Typography variant="h5">{formatter.format(product?.price)}</Typography>
       <Stack direction="row" spacing={1}>
         <Rating
           size="small"
