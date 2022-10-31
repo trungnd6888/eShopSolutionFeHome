@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid, Skeleton, Typography } from '@mui/material';
 import React from 'react';
 // Import Swiper React components
 import { Autoplay } from 'swiper';
@@ -7,16 +7,19 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import Item from '../Item/Item';
 import { PropTypes } from 'prop-types';
+import ItemSkeleton from '../ItemSkeleton/ItemSkeleton';
 
 ListItem.propTypes = {
   title: PropTypes.string,
+  list: PropTypes.array,
 };
 
 ListItem.dfaultValues = {
   title: '',
+  list: [],
 };
 
-function ListItem({ title }) {
+function ListItem({ title, list }) {
   return (
     <Container sx={{ mt: 3 }}>
       <Grid container spacing={3}>
@@ -56,24 +59,17 @@ function ListItem({ title }) {
                 },
               }}
             >
-              <SwiperSlide>
-                <Item />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Item />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Item />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Item />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Item />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Item />
-              </SwiperSlide>
+              {list
+                ? list?.map((item) => (
+                    <SwiperSlide key={item.id}>
+                      <Item item={item} />
+                    </SwiperSlide>
+                  ))
+                : Array.from({ length: 4 }, (_, i) => i + 1).map((x) => (
+                    <SwiperSlide key={x}>
+                      <ItemSkeleton />
+                    </SwiperSlide>
+                  ))}
             </Swiper>
           </Box>
         </Grid>

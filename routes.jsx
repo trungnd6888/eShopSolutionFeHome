@@ -44,7 +44,7 @@ function Router(props) {
               element: <Product />,
             },
             {
-              path: 'productdetail',
+              path: ':id',
               element: <ProductDetail />,
             },
           ],
