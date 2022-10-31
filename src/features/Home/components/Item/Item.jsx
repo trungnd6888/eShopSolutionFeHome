@@ -1,18 +1,37 @@
-import * as React from 'react';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { Button, CardActionArea, CardActions, Chip, Stack } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Box, Button, CardActionArea, CardActions, Chip } from '@mui/material';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import PropTypes from 'prop-types';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
-import productImage from '../../../../../images/Rolex01.jpg';
+import { STORAGE_IMAGE } from '../../../../constants/common';
+import { formatter } from '../../../../utils/formatNumber';
 
-export default function Item() {
+Item.propTypes = {
+  item: PropTypes.object,
+};
+
+Item.defaultValues = {
+  item: null,
+};
+
+export default function Item({ item }) {
   return (
     <Card sx={{ mb: 1, borderRadius: 4 }}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image={productImage} alt="green iguana" />
+        <CardMedia
+          component="img"
+          image={
+            item?.images?.find((x) => x.sortOrder === 0)?.imageUrl
+              ? `https://localhost:7095${item?.images?.find((x) => x.sortOrder === 0)?.imageUrl}`
+              : STORAGE_IMAGE.PRODUCT_THUMBNAI
+          }
+          alt="green iguana"
+          sx={{ borderRadius: '0!important', height: '200px!important' }}
+        />
         <CardContent sx={{ minHeight: 120 }}>
           <Typography
             sx={{
@@ -20,23 +39,26 @@ export default function Item() {
               textDecoration: 'none',
               '&:hover': { textDecoration: 'underline' },
             }}
-            to="/product/productdetail"
+            to={`/product/${item.id}`}
             component={Link}
             gutterBottom
             variant="h6"
           >
-            Đồng hồ Rolex 123445435
+            {item.name}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            {item.code}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Automatic
+            {item.detail}
           </Typography>
         </CardContent>
-        <Chip
-          size="small"
-          label="NEW"
-          color="primary"
-          sx={{ position: 'absolute', top: 10, right: 10, borderRadius: 1 }}
-        />
+        <Stack spacing={1} sx={{ position: 'absolute', top: 10, right: 10 }}>
+          {item.isNew && <Chip size="small" label="MỚI" color="primary" sx={{ borderRadius: 1 }} />}
+          {item.isBestSale && (
+            <Chip size="small" label="CHẠY" color="error" sx={{ borderRadius: 1 }} />
+          )}
+        </Stack>
       </CardActionArea>
       <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button size="medium" color="primary">
@@ -44,7 +66,7 @@ export default function Item() {
           Mua
         </Button>
         <Typography sx={{ p: 1 }} variant="subtitle2">
-          1.000.000 &#8363;
+          {formatter.format(item.price)}
         </Typography>
       </CardActions>
     </Card>

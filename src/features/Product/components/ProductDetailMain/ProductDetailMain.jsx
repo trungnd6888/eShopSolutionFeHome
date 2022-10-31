@@ -1,18 +1,25 @@
-import { Container, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ProductDetailInfo from './components/ProductDetailInfo/ProductDetailInfo';
 import ProductDetailSlide from './components/ProductDetailSilde/ProductDetailSlide';
 
-ProductDetailMain.propTypes = {};
+ProductDetailMain.propTypes = {
+  product: PropTypes.object,
+};
 
-function ProductDetailMain(props) {
+ProductDetailMain.defaultValues = {
+  product: null,
+};
+
+function ProductDetailMain({ product }) {
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} sm={12} md={6}>
-        <ProductDetailSlide />
+        <ProductDetailSlide product={product} />
       </Grid>
       <Grid item xs={12} sm={12} md={6}>
-        <ProductDetailInfo />
+        <ProductDetailInfo product={product} />
       </Grid>
     </Grid>
   );
