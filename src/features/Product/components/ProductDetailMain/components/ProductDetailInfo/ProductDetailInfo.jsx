@@ -4,18 +4,25 @@ import { Button, Chip, Divider, Rating, Stack, Typography } from '@mui/material'
 import React from 'react';
 import PropTypes from 'prop-types';
 import { formatter } from '../../../../../../utils/formatNumber';
+import { useDispatch } from 'react-redux';
+import { increment } from '../../../../../Cart/cartSlice';
+import { useNavigate } from 'react-router-dom';
 
 ProductDetailInfo.propTypes = {
   product: PropTypes.object,
+  onTotalQuantityCart: PropTypes.func,
 };
 
 ProductDetailInfo.defaultValues = {
   product: null,
+  onTotalQuantityCart: null,
 };
 
-function ProductDetailInfo({ product }) {
+function ProductDetailInfo({ product, onTotalQuantityCart }) {
   const [value, setValue] = React.useState(2);
   const [number, setNumber] = React.useState(1);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleAdd = () => {
     setNumber((pre) => pre + 1);
@@ -24,6 +31,20 @@ function ProductDetailInfo({ product }) {
   const handleSub = () => {
     if (number > 1) setNumber((pre) => pre - 1);
     return;
+  };
+
+  const handleAddToCart = () => {
+    const action = increment({ productId: product?.id, quantity: number });
+    dispatch(action);
+
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
+
+  const handleBuyNow = () => {
+    handleAddToCart();
+    navigate('/cart');
+
+    if (onTotalQuantityCart) onTotalQuantityCart();
   };
 
   return (
@@ -73,10 +94,10 @@ function ProductDetailInfo({ product }) {
         <Divider />
       </Stack>
       <Stack spacing={2} direction="row">
-        <Button variant="contained" color="error" size="large">
+        <Button variant="contained" color="error" size="large" onClick={handleBuyNow}>
           Mua ngay
         </Button>
-        <Button variant="contained" size="large">
+        <Button variant="contained" size="large" onClick={handleAddToCart}>
           Thêm giỏ hàng
         </Button>
       </Stack>

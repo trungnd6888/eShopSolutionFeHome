@@ -4,12 +4,23 @@ import { useParams } from 'react-router-dom';
 import productApi from '../../../../api/productApi';
 import ProductDetailHeader from '../../components/ProductDetailHeader/ProductDetailHeader';
 import ProductDetailMain from '../../components/ProductDetailMain/ProductDetailMain';
+import PropTypes from 'prop-types';
 
-ProductDetail.propTypes = {};
+ProductDetail.propTypes = {
+  onTotalQuantityCart: PropTypes.func,
+};
 
-function ProductDetail(props) {
+ProductDetail.defaultValues = {
+  onTotalQuantityCart: null,
+};
+
+function ProductDetail({ onTotalQuantityCart }) {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+
+  const handleTotalQuantityCart = () => {
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
 
   useEffect(() => {
     fetchProduct();
@@ -27,7 +38,7 @@ function ProductDetail(props) {
   return (
     <Container>
       <ProductDetailHeader />
-      <ProductDetailMain product={product} />
+      <ProductDetailMain product={product} onTotalQuantityCart={handleTotalQuantityCart} />
     </Container>
   );
 }

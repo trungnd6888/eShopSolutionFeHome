@@ -4,41 +4,67 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, Button, Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { formatter } from '../../../../../../utils/formatNumber';
 import { PropTypes } from 'prop-types';
-import cartImage from '../../../../../../../images/product01.png';
 import React from 'react';
+import { STORAGE_IMAGE } from '../../../../../../constants/common';
+import { useDispatch } from 'react-redux';
+import { decreament, increment } from '../../../../cartSlice';
 
 CartRow.propTypes = {
-  onTotal: PropTypes.func,
+  onFetchList: PropTypes.func,
+  item: PropTypes.object,
 };
 
 CartRow.defaultValues = {
-  onTotal: null,
+  onFetchList: null,
+  item: null,
 };
 
 CartRow.propTypes;
 
-function CartRow({ onTotal }) {
-  const [number, setNumber] = React.useState(1);
+function CartRow({ onFetchList, item }) {
+  const [number, setNumber] = React.useState(item.quantity);
   const [mount, setMount] = React.useState(true);
-  const price = 1000000;
+  const dispatch = useDispatch();
 
   const handleAdd = () => {
-    if (onTotal) onTotal(price);
+    const payload = { productId: item.productId, quantity: 1 };
+    const action = increment(payload);
+    dispatch(action);
+
+    if (onFetchList) onFetchList();
     setNumber((pre) => pre + 1);
   };
 
   const handleSub = () => {
     if (number <= 1) return;
 
-    if (onTotal) onTotal(-price);
+    const payload = { productId: item.productId, quantity: 1 };
+    const action = decreament(payload);
+    dispatch(action);
+
+    if (onFetchList) onFetchList();
     setNumber((pre) => pre - 1);
   };
 
   const handleMount = () => {
+    const payload = { productId: item.productId, quantity: number };
+    const action = decreament(payload);
+    dispatch(action);
+
     setMount(false);
 
-    if (onTotal) onTotal(-(price * number));
+    if (onFetchList) onFetchList();
     setNumber(0);
+  };
+
+  const getPathImageTheFirst = (imageList) => {
+    const image = imageList?.find((x) => x.sortOrder === 0);
+    if (!image) return STORAGE_IMAGE.PRODUCT_THUMBNAI;
+
+    const url = image.imageUrl;
+    const path = url ? `https://localhost:7095/${url}` : STORAGE_IMAGE.PRODUCT_THUMBNAI;
+
+    return path;
   };
 
   return (
@@ -55,20 +81,25 @@ function CartRow({ onTotal }) {
           <Grid container>
             <Grid item xs={12} sm={3}>
               <Box sx={{ height: { xs: 230, sm: 130 } }}>
-                <img width="100%" height="100%" style={{ objectFit: 'cover' }} src={cartImage} />
+                <img
+                  width="100%"
+                  height="100%"
+                  style={{ objectFit: 'cover' }}
+                  src={getPathImageTheFirst(item.product?.images)}
+                />
               </Box>
             </Grid>
             <Grid item xs={12} sm={9}>
               <Stack spacing={1.5} sx={{ p: 1, pl: 2 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                  Đồng hồ Rolex chính hãng
+                  {item.product?.name}
                 </Typography>
                 <Stack direction="row" spacing={1}>
                   <Typography variant="body2">
-                    {formatter.format(price)} x {number}
+                    {formatter.format(item.product?.price)} x {number}
                   </Typography>
                   <Typography variant="body2" color="error">
-                    {formatter.format(number * price)}
+                    {formatter.format(number * item.product?.price)}
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1}>

@@ -12,14 +12,20 @@ import ItemSkeleton from '../ItemSkeleton/ItemSkeleton';
 ListItem.propTypes = {
   title: PropTypes.string,
   list: PropTypes.array,
+  onTotalQuantityCart: PropTypes.func,
 };
 
 ListItem.dfaultValues = {
   title: '',
   list: [],
+  onTotalQuantityCart: null,
 };
 
-function ListItem({ title, list }) {
+function ListItem({ title, list, onTotalQuantityCart }) {
+  const handleTotalQuantityCart = () => {
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
+
   return (
     <Container sx={{ mt: 3 }}>
       <Grid container spacing={3}>
@@ -62,7 +68,7 @@ function ListItem({ title, list }) {
               {list
                 ? list?.map((item) => (
                     <SwiperSlide key={item.id}>
-                      <Item item={item} />
+                      <Item onTotalQuantityCart={handleTotalQuantityCart} item={item} />
                     </SwiperSlide>
                   ))
                 : Array.from({ length: 4 }, (_, i) => i + 1).map((x) => (

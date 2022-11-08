@@ -3,13 +3,15 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
-PostDetailtHeader.propTypes = {};
+PostDetailtHeader.propTypes = {
+  title: PropTypes.string,
+};
 
-function handleClick(event) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
+PostDetailtHeader.defaultValues = {
+  title: '',
+};
 
 const CustomizeLink = styled(Link)({
   fontSize: 14,
@@ -18,7 +20,7 @@ const CustomizeLink = styled(Link)({
   '&:hover': { textDecoration: 'underline' },
 });
 
-function PostDetailtHeader(props) {
+function PostDetailtHeader({ title }) {
   const breadcrumbs = [
     <CustomizeLink to="/home" key="1">
       Trang chủ
@@ -27,7 +29,7 @@ function PostDetailtHeader(props) {
       Bài viết
     </CustomizeLink>,
     <Typography key="3" sx={{ fontSize: 14 }} color="text.primary">
-      Cách phân biệt đồng hồ chính...
+      {title}
     </Typography>,
   ];
 

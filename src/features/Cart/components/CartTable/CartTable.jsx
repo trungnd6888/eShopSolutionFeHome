@@ -3,16 +3,18 @@ import CartRow from './components/CartRow/CartRow';
 import { PropTypes } from 'prop-types';
 
 CartRow.propTypes = {
-  onTotal: PropTypes.func,
+  onFetchList: PropTypes.func,
+  list: PropTypes.array,
 };
 
 CartRow.defaultValues = {
-  onTotal: null,
+  onFetchList: null,
+  list: null,
 };
 
-function CartTable({ onTotal }) {
-  const handleTotal = (price) => {
-    if (onTotal) onTotal(price);
+function CartTable({ onFetchList, list }) {
+  const handleFetchList = () => {
+    if (onFetchList) onFetchList();
   };
 
   return (
@@ -20,10 +22,17 @@ function CartTable({ onTotal }) {
       <Typography sx={{ mb: 3, display: 'block' }} variant="button">
         Chi tiết đơn hàng
       </Typography>
+
       <Stack spacing={3}>
-        <CartRow onTotal={handleTotal} />
-        <CartRow onTotal={handleTotal} />
-        <CartRow onTotal={handleTotal} />
+        {list?.length > 0 ? (
+          list?.map((item) => (
+            <CartRow onFetchList={handleFetchList} key={item.productId} item={item} />
+          ))
+        ) : (
+          <Typography variant="overline" textAlign="center">
+            Giỏ hàng trống
+          </Typography>
+        )}
       </Stack>
     </Paper>
   );

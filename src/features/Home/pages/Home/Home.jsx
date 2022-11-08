@@ -6,11 +6,21 @@ import productApi from '../../../../api/productApi';
 import bannerApi from '../../../../api/bannerApi';
 import Banner from '../../components/Banner/pages/Banner';
 
-Home.propTypes = {};
+Home.propTypes = {
+  onTotalQuantityCart: PropTypes.func,
+};
 
-function Home(props) {
+Home.defaultValues = {
+  onTotalQuantityCart: null,
+};
+
+function Home({ onTotalQuantityCart }) {
   const [list, setList] = useState(null);
   const [bannerList, setBannerList] = useState(null);
+
+  const handleTotalQuantityCart = () => {
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
 
   useEffect(() => {
     fetchProduct();
@@ -33,7 +43,6 @@ function Home(props) {
       const { data } = await bannerApi.getAll();
       if (!data) returns;
 
-      console.log('banner list: ', data);
       setBannerList(data);
     } catch (error) {
       console.log('Fail to fetch banner list');
@@ -43,9 +52,21 @@ function Home(props) {
   return (
     <Box sx={{ mb: 5 }}>
       <Banner list={bannerList} />
-      <ListItem list={list?.filter((x) => x.isNew)} title="Sản phẩm mới" />
-      <ListItem list={list?.filter((x) => x.isBestSale)} title="Sản phẩm bán chạy" />
-      <ListItem list={list?.filter((x) => !x.isNew && !x.isBestSale)} title="Sản phẩm nổi bật" />
+      <ListItem
+        onTotalQuantityCart={handleTotalQuantityCart}
+        list={list?.filter((x) => x.isNew)}
+        title="Sản phẩm mới"
+      />
+      <ListItem
+        onTotalQuantityCart={handleTotalQuantityCart}
+        list={list?.filter((x) => x.isBestSale)}
+        title="Sản phẩm bán chạy"
+      />
+      <ListItem
+        onTotalQuantityCart={handleTotalQuantityCart}
+        list={list?.filter((x) => !x.isNew && !x.isBestSale)}
+        title="Sản phẩm nổi bật"
+      />
     </Box>
   );
 }
