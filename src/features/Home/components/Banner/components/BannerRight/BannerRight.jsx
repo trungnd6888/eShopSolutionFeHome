@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import PropTypes from 'prop-types';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { STORAGE_IMAGE } from '../../../../../../constants/common';
 
 BannerRight.propTypes = {
   list: PropTypes.array,
@@ -52,7 +53,13 @@ function BannerRight({ list }) {
           >
             {list?.map((item) => (
               <SwiperSlide key={item.id}>
-                <CustomizeBox src={`https://localhost:7095/${item.imageUrl}`} />
+                <CustomizeBox
+                  src={
+                    item.imageUrl
+                      ? `https://localhost:7095/${item.imageUrl}`
+                      : STORAGE_IMAGE.PRODUCT_THUMBNAI
+                  }
+                />
               </SwiperSlide>
             ))}
           </Swiper>

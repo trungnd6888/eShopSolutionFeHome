@@ -11,7 +11,13 @@ import PaymentData from '../PaymentTable/components/PaymentData/PaymentData';
 import { formatter } from '../../../../utils/formatNumber';
 import { Typography } from '@mui/material';
 
-PaymentTable.propTypes = {};
+PaymentTable.propTypes = {
+  list: PropTypes.array,
+};
+
+PaymentTable.defaultValues = {
+  list: null,
+};
 
 function priceRow(qty, unit) {
   return qty * unit;
@@ -23,19 +29,21 @@ function createRow(desc, qty, unit) {
 }
 
 function qtyTotal(items) {
-  return items.map(({ qty }) => qty).reduce((sum, i) => sum + i, 0);
+  return items?.map(({ qty }) => qty).reduce((sum, i) => sum + i, 0);
 }
 
 function total(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  return items?.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
 }
 
-const rows = [createRow(<PaymentData />, 2, 1000000), createRow(<PaymentData />, 2, 1000000)];
+function PaymentTable({ list }) {
+  const rows = list?.map((x) =>
+    createRow(<PaymentData data={x.product} />, x.quantity, x.product?.price)
+  );
 
-const invoiceQty = qtyTotal(rows);
-const invoiceTotal = total(rows);
+  const invoiceQty = qtyTotal(rows);
+  const invoiceTotal = total(rows);
 
-function PaymentTable(props) {
   return (
     <Paper sx={{ p: 3 }}>
       <Typography sx={{ display: 'block', mb: 4 }} variant="button">
@@ -52,7 +60,7 @@ function PaymentTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
+            {rows?.map((row, index) => (
               <TableRow key={index + row.qty}>
                 <TableCell>{row.desc}</TableCell>
                 <TableCell align="right">{row.qty}</TableCell>

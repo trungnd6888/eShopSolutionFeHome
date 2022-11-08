@@ -1,27 +1,23 @@
 import { Box, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import * as React from 'react';
+import { styled } from '@mui/system';
+import { Link } from 'react-router-dom';
 
 CartHeader.propTypes = {};
 
-function handleClick(event) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
+const CustomizeLink = styled(Link)({
+  fontSize: 14,
+  color: 'inherit',
+  textDecoration: 'none',
+  '&:hover': { textDecoration: 'underline' },
+});
 
 function CartHeader(props) {
   const breadcrumbs = [
-    <Link
-      underline="hover"
-      key="1"
-      sx={{ fontSize: 14 }}
-      color="inherit"
-      href="/"
-      onClick={handleClick}
-    >
+    <CustomizeLink key="1" to="/home">
       Trang chủ
-    </Link>,
+    </CustomizeLink>,
     <Typography key="2" sx={{ fontSize: 14 }} color="text.primary">
       Giỏ hàng
     </Typography>,

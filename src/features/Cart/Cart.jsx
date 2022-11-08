@@ -6,14 +6,45 @@ import { Box, Container, Grid, Stack, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import CartHeader from './components/CartHeader/CartHeader';
+import { useEffect } from 'react';
+import productApi from '../../api/productApi';
 
-Cart.propTypes = {};
+Cart.propTypes = {
+  onTotalQuantityCart: PropTypes.func,
+};
 
-function Cart(props) {
-  const [total, setTotal] = React.useState(3000000);
+Cart.defaultValues = {
+  onTotalQuantityCart: null,
+};
 
-  const handleTotal = (price) => {
-    setTotal((pre) => pre + price);
+function Cart({ onTotalQuantityCart }) {
+  const [total, setTotal] = React.useState(0);
+  const [list, setList] = React.useState(null);
+
+  const handleFetchList = async () => {
+    await fetchCartList();
+
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
+
+  useEffect(() => {
+    fetchCartList();
+  }, []);
+
+  const fetchCartList = async () => {
+    const cartList = JSON.parse(localStorage.getItem('cart'));
+    if (!cartList) return;
+
+    let total = 0;
+
+    for (let i = 0; i < cartList?.length; i++) {
+      const item = cartList[i];
+      item.product = await productApi.getById(item.productId);
+      total = total + item.quantity * item.product?.price;
+    }
+
+    setList(cartList);
+    setTotal(total);
   };
 
   return (
@@ -24,7 +55,7 @@ function Cart(props) {
             <CartHeader />
           </Grid>
           <Grid item xs={12} sm={12} md={8}>
-            <CartTable onTotal={handleTotal} />
+            <CartTable onFetchList={handleFetchList} list={list} />
             <Button sx={{ mt: 2, fontSize: 12 }} color="inherit" to="/home" component={Link}>
               <ArrowBackIosNewIcon sx={{ mr: 1, fontSize: 12 }} fontSize="small" />
               Tiếp tục mua
