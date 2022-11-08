@@ -17,9 +17,19 @@ import Profile from './src/features/Profile/pages/Profile/Profile';
 import Login from './src/features/Auth/components/Login/Login';
 import Register from './src/features/Auth/components/Register/Register';
 
-Router.propTypes = {};
+Router.propTypes = {
+  onTotalQuantityCart: PropTypes.func,
+};
 
-function Router(props) {
+Router.defaultValues = {
+  onTotalQuantityCart: null,
+};
+
+function Router({ onTotalQuantityCart }) {
+  const handleTotalQuantityCart = () => {
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
+
   return useRoutes([
     {
       path: '/',
@@ -35,17 +45,17 @@ function Router(props) {
         { path: 'search', element: <Search /> },
         { path: 'contact', element: <Contact /> },
         { path: 'aboutUs', element: <AboutUs /> },
-        { path: 'home', element: <Home /> },
+        { path: 'home', element: <Home onTotalQuantityCart={handleTotalQuantityCart} /> },
         {
           path: 'product',
           children: [
             {
               index: true,
-              element: <Product />,
+              element: <Product onTotalQuantityCart={handleTotalQuantityCart} />,
             },
             {
               path: ':id',
-              element: <ProductDetail />,
+              element: <ProductDetail onTotalQuantityCart={handleTotalQuantityCart} />,
             },
           ],
         },
@@ -54,7 +64,7 @@ function Router(props) {
           children: [
             {
               index: true,
-              element: <Cart />,
+              element: <Cart onTotalQuantityCart={handleTotalQuantityCart} />,
             },
             {
               path: 'payment',
@@ -70,7 +80,7 @@ function Router(props) {
               element: <Post />,
             },
             {
-              path: 'postdetail',
+              path: ':id',
               element: <PostDetail />,
             },
           ],

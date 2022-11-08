@@ -2,6 +2,7 @@ import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import ShareIcon from '@mui/icons-material/Share';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import { Link } from '@mui/material';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import * as React from 'react';
@@ -11,14 +12,17 @@ export default function PostDetailShareButton() {
     {
       icon: <FacebookOutlinedIcon />,
       name: 'Facebook',
+      url: 'https://www.facebook.com/',
     },
     {
       icon: <InstagramIcon />,
       name: 'Instagram',
+      url: 'https://www.instagram.com/',
     },
     {
       icon: <TwitterIcon />,
       name: 'Twitter',
+      url: 'https://twitter.com/',
     },
   ];
 
@@ -35,7 +39,13 @@ export default function PostDetailShareButton() {
       icon={<ShareIcon />}
     >
       {actions.map((action) => (
-        <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} />
+        <SpeedDialAction
+          components={Link}
+          href={action.url}
+          key={action.name}
+          icon={action.icon}
+          tooltipTitle={action.name}
+        />
       ))}
     </SpeedDial>
   );

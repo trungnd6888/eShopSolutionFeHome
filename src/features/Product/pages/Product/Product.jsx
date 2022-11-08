@@ -7,10 +7,17 @@ import ProductList from '../../components/ProductList/ProductList';
 import ProductPagination from '../../components/ProductPagination/ProductPagination';
 import ProductToolBar from '../../components/ProductToolBar/ProductToolBar';
 import productApi from '../../../../api/productApi';
+import PropTypes from 'prop-types';
 
-Product.propTypes = {};
+Product.propTypes = {
+  onTotalQuantityCart: PropTypes.func,
+};
 
-function Product(props) {
+Product.defaultValues = {
+  onTotalQuantityCart: null,
+};
+
+function Product({ onTotalQuantityCart }) {
   const [filter, setFilter] = useState({ keyword: '', radio: 0, checkbox: [] });
   const [list, setList] = useState(null);
   const [page, setPage] = useState(1);
@@ -97,14 +104,19 @@ function Product(props) {
     handleFilterChange({ keyword: '', radio: 0, checkbox: [] });
   };
 
+  const handleTotalQuantityCart = () => {
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
+
   useEffect(() => {
     renderProduct();
   }, []);
 
   const renderProduct = async () => {
     const productList = await fetchProduct();
-    setList(productList);
+    if (!productList) return;
 
+    setList(productList);
     handleSelectChange(1);
   };
 
@@ -126,7 +138,7 @@ function Product(props) {
         onOpenFilter={handleOpenFilter}
         selected={selected}
       />
-      <ProductList list={_LIST.currentData()} />
+      <ProductList list={_LIST.currentData()} onTotalQuantityCart={handleTotalQuantityCart} />
       <ProductPagination count={count} page={page} onChange={handlePaginationChange} />
       <ProductFilter
         checkBoxValue={filter.checkbox}

@@ -10,6 +10,17 @@ import { styled } from '@mui/system';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import postImage from '../../../../../../../images/post01.jpg';
+import PropTypes from 'prop-types';
+import { STORAGE_IMAGE } from '../../../../../../constants/common';
+import { getTitleSlice } from '../../../../../../utils/common';
+
+PostDetailFooterItem.propTypes = {
+  item: PropTypes.object,
+};
+
+PostDetailFooterItem.defaultValues = {
+  item: null,
+};
 
 const CustomizeTypography = styled(Typography)({
   '&:hover': { textDecoration: 'underline' },
@@ -19,22 +30,39 @@ const CustomizeTypography = styled(Typography)({
   fontWeight: 600,
 });
 
-export default function PostDetailFooterItem() {
+export default function PostDetailFooterItem({ item }) {
+  const getPathImage = (url) => {
+    const path = item.imageUrl
+      ? `https://localhost:7095${item.imageUrl}`
+      : STORAGE_IMAGE.PRODUCT_THUMBNAI;
+    return path;
+  };
+
+  const getDateString = (dateString) => {
+    return `${new Date(dateString).getDate()} tháng 
+    ${new Date(dateString).getMonth()} ${new Date(dateString).getUTCFullYear()}`;
+  };
+
   return (
     <Card sx={{ mb: 1, borderRadius: 4 }}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image={postImage} alt="green iguana" />
+        <CardMedia
+          component="img"
+          height="140"
+          image={getPathImage(item?.imageUrl)}
+          alt="green iguana"
+        />
         <CardContent>
           <Typography variant="caption" color="text.secondary">
-            22 tháng 10
+            {getDateString(item?.createDate)}
           </Typography>
           <CustomizeTypography
             component={Link}
-            to="/post/postdetail"
+            to={`/post/${item?.id}`}
             gutterBottom
             variant="subtitle2"
           >
-            Cách phân biệt đồng hồ chính hãng
+            {getTitleSlice(item.title, 60)}
           </CustomizeTypography>
         </CardContent>
       </CardActionArea>

@@ -9,27 +9,62 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { formatter } from '../../../../../../utils/formatNumber';
 import { STORAGE_IMAGE } from '../../../../../../constants/common';
+import { useDispatch } from 'react-redux';
+import { increment } from '../../../../../Cart/cartSlice';
+import { open } from '../../../../../Auth/snackBarSlice';
 
 ProductItem.propTypes = {
   item: PropTypes.object,
+  onTotalQuantityCart: PropTypes.func,
 };
 
 ProductItem.defaultValues = {
   item: null,
+  onTotalQuantityCart: null,
 };
 
-export default function ProductItem({ item }) {
+export default function ProductItem({ item, onTotalQuantityCart }) {
+  const dispatch = useDispatch();
+
+  const getPathImageTheFirst = (imageList) => {
+    const image = imageList?.find((x) => x.sortOrder === 0);
+    const path = image ? `https://localhost:7095${image.imageUrl}` : STORAGE_IMAGE.PRODUCT_THUMBNAI;
+    return path;
+  };
+
+  const handleAddToCart = () => {
+    try {
+      const payload = { productId: item.id, quantity: 1 };
+      const action = increment(payload);
+      dispatch(action);
+
+      if (onTotalQuantityCart) onTotalQuantityCart();
+
+      const actionSnackbar = open({
+        status: true,
+        message: 'Thêm giỏ hàng thành công',
+        type: 'success',
+      });
+      dispatch(actionSnackbar);
+    } catch (error) {
+      console.log('Fail to add to card: ', error);
+
+      const actionSnackbar = open({
+        status: true,
+        message: 'Thêm giỏ hàng không thành công',
+        type: 'error',
+      });
+      dispatch(actionSnackbar);
+    }
+  };
+
   return (
     <Card sx={{ mb: 1, borderRadius: 4 }}>
       <CardActionArea>
         <CardMedia
           component="img"
           height="140"
-          image={
-            item.images?.find((x) => x.sortOrder === 0)
-              ? `https://localhost:7095${item.images.find((x) => x.sortOrder === 0).imageUrl}`
-              : STORAGE_IMAGE.PRODUCT_THUMBNAI
-          }
+          image={getPathImageTheFirst(item.images)}
           alt="green iguana"
         />
         <CardContent sx={{ minHeight: 100 }}>
@@ -58,7 +93,7 @@ export default function ProductItem({ item }) {
         </Stack>
       </CardActionArea>
       <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button size="medium" color="primary">
+        <Button size="medium" color="primary" onClick={handleAddToCart}>
           <AddShoppingCartIcon sx={{ position: 'relative', bottom: 1, mr: 0.5, fontSize: 18 }} />
           Mua
         </Button>

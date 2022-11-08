@@ -4,6 +4,15 @@ import SpeedDial from '@mui/material/SpeedDial';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
+import PropTypes from 'prop-types';
+
+CartButton.propTypes = {
+  badgeContent: PropTypes.number,
+};
+
+CartButton.defaultValues = {
+  badgeContent: 0,
+};
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -14,13 +23,13 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export default function CartButton() {
+export default function CartButton({ badgeContent }) {
   return (
     <SpeedDial
       ariaLabel="SpeedDial basic example"
       sx={{ position: 'fixed', top: '68vh', right: 9 }}
       icon={
-        <StyledBadge component={Link} to="cart" badgeContent={4} color="secondary">
+        <StyledBadge component={Link} to="cart" badgeContent={badgeContent} color="secondary">
           <ShoppingCartIcon sx={(theme) => ({ color: theme.palette.common.white })} />
         </StyledBadge>
       }

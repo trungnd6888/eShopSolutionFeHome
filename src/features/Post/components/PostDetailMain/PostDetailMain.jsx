@@ -5,15 +5,49 @@ import { blueGrey } from '@mui/material/colors';
 import PostDetailShareButton from './components/PostDetailShareButton/PostDetailShareButton';
 import postImage from '../../../../../images/post01.jpg';
 import avatarImage from '../../../../../images/avatar.jpg';
+import { STORAGE_IMAGE } from '../../../../constants/common';
+import { styled } from '@mui/system';
+import { getTitleSlice } from '../../../../utils/common';
 
-PostDetailMain.propTypes = {};
+PostDetailMain.propTypes = {
+  post: PropTypes.object,
+};
 
-function PostDetailMain(props) {
+PostDetailMain.defaultVaues = {
+  post: null,
+};
+
+const CustomizeDiv = styled(Box)({
+  mb: 6,
+  overflow: 'hidden',
+  '& img': {
+    width: '100%',
+  },
+});
+
+const getPathImage = (url) => {
+  return url ? `https://localhost:7095${url}` : STORAGE_IMAGE.PRODUCT_THUMBNAI;
+};
+
+const getPathAvatar = (url) => {
+  return `https://localhost:7095${url}`;
+};
+
+const getDateString = (date) => {
+  return date
+    ? `tháng ${new Date(date).getMonth()} 
+  ${new Date(date).getUTCFullYear()}`
+    : '';
+};
+
+function PostDetailMain({ post }) {
   return (
     <Paper sx={{ overflow: 'hidden', borderRadius: 4 }}>
       <Box sx={{ position: 'relative', mb: 3 }}>
-        <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={postImage} />
-
+        <img
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          src={getPathImage(post?.imageUrl)}
+        />
         <Typography
           sx={(theme) => ({
             position: 'absolute',
@@ -26,7 +60,7 @@ function PostDetailMain(props) {
             color: theme.palette.common.white,
           })}
         >
-          Cách Phân Biệt Đồng Hồ Chính Hãng Và Đồng Hồ Giả
+          {getTitleSlice(post?.title, 100)}
         </Typography>
         <Stack
           sx={{
@@ -37,62 +71,22 @@ function PostDetailMain(props) {
           }}
           direction="row"
         >
-          <Avatar sx={{ mr: 1 }} alt="Remy Sharp" src={avatarImage} />
+          <Avatar sx={{ mr: 1 }} alt="Remy Sharp" src={getPathAvatar(post?.avatarImage)} />
           <Stack>
             <Typography sx={(theme) => ({ color: theme.palette.common.white })} variant="subtitle2">
-              Nguyễn Đức Trung
+              {post?.userName}
             </Typography>
             <Typography sx={{ color: blueGrey[400] }} variant="caption">
-              tháng 10 2022
+              {getDateString(post?.createDate)}
             </Typography>
           </Stack>
         </Stack>
-
         <PostDetailShareButton />
       </Box>
       <Container>
-        <Stack spacing={3} sx={{ mb: 6 }}>
-          <Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam sint fuga recusandae
-            minima iure nesciunt eligendi aliquid adipisci minus sed. Nam eius accusamus qui quasi,
-            sed laboriosam recusandae quos voluptatum.
-            <br />
-            <br />
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum consequuntur rerum,
-            molestias animi impedit voluptatibus earum nobis esse provident? Molestias, ex sed
-            numquam porro iste cum sit accusamus nostrum error!
-          </Typography>
-          <img
-            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 16 }}
-            src={postImage}
-          />
-          <Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam sint fuga recusandae
-            minima iure nesciunt eligendi aliquid adipisci minus sed. Nam eius accusamus qui quasi,
-            sed laboriosam recusandae quos voluptatum. Lorem ipsum dolor sit, amet consectetur
-            adipisicing elit.
-            <br />
-            <br />
-            Illum consequuntur rerum, molestias animi impedit voluptatibus earum nobis esse
-            provident? Molestias, ex sed numquam porro iste cum sit accusamus nostrum error! Lorem
-            ipsum dolor sit, amet consectetur adipisicing elit. Nam sint fuga recusandae minima iure
-            nesciunt eligendi aliquid adipisci minus sed. Nam eius accusamus qui quasi, sed
-            laboriosam recusandae quos voluptatum. Lorem ipsum dolor sit, amet consectetur
-            adipisicing elit.
-          </Typography>
-          <img
-            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 16 }}
-            src={postImage}
-          />
-          <Typography>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            <br />
-            <br />
-            Nam sint fuga recusandae minima iure nesciunt eligendi aliquid adipisci minus sed. Nam
-            eius accusamus qui quasi, sed laboriosam recusandae quos voluptatum. Lorem ipsum dolor
-            sit, amet consectetur adipisicing elit.
-          </Typography>
-        </Stack>
+        <CustomizeDiv>
+          <div dangerouslySetInnerHTML={{ __html: post?.content }} />
+        </CustomizeDiv>
       </Container>
     </Paper>
   );

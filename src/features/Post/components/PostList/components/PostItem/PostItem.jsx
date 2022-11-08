@@ -11,6 +11,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import postImage from '../../../../../../../images/post01.jpg';
+import { STORAGE_IMAGE } from '../../../../../../constants/common';
+import { getTitleSlice } from '../../../../../../utils/common';
 
 PostItem.propTypes = {
   item: PropTypes.object,
@@ -29,16 +31,33 @@ const CustomizeTypography = styled(Typography)({
 });
 
 export default function PostItem({ item }) {
+  const getPathImage = (url) => {
+    const path = item.imageUrl
+      ? `https://localhost:7095${item.imageUrl}`
+      : STORAGE_IMAGE.PRODUCT_THUMBNAI;
+    return path;
+  };
+
+  const getDateString = (dateString) => {
+    return `${new Date(dateString).getDate()} tháng 
+    ${new Date(dateString).getMonth()} ${new Date(dateString).getUTCFullYear()}`;
+  };
+
   return (
     <Card sx={{ mb: 1, borderRadius: 4 }}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image={postImage} alt="green iguana" />
-        <CardContent sx={{ minHeight: 100 }}>
+        <CardMedia
+          component="img"
+          height="140"
+          image={getPathImage(item.imageUrl)}
+          alt="green iguana"
+        />
+        <CardContent sx={{ minHeight: { xs: 100, sm: 145 } }}>
           <Typography variant="caption" color="text.secondary">
-            {`${item.createDate.getDate()} tháng ${item.createDate.getMonth()} ${item.createDate.getUTCFullYear()}`}
+            {getDateString(item.createDate)}
           </Typography>
-          <CustomizeTypography component={Link} to="postdetail" gutterBottom variant="subtitle2">
-            {item.title}
+          <CustomizeTypography component={Link} to={`${item.id}`} gutterBottom variant="subtitle2">
+            {getTitleSlice(item.title, 60)}
           </CustomizeTypography>
         </CardContent>
       </CardActionArea>

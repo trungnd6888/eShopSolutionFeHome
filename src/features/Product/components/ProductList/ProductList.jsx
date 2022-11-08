@@ -6,19 +6,25 @@ import ProductSkeleton from './components/ProductSkeleton/ProductSkeleton';
 
 ProductList.propTypes = {
   list: PropTypes.array,
+  onTotalQuantityCart: PropTypes.func,
 };
 
 ProductList.defaultValues = {
   list: [],
+  onTotalQuantityCart: null,
 };
 
-export default function ProductList({ list }) {
+export default function ProductList({ list, onTotalQuantityCart }) {
+  const handleTotalQuantityCart = () => {
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
+
   return (
     <Grid container spacing={3}>
       {list
         ? list.map((item) => (
             <Grid item xs={12} sm={4} md={3} key={item.id}>
-              <ProductItem item={item} />
+              <ProductItem item={item} onTotalQuantityCart={handleTotalQuantityCart} />
             </Grid>
           ))
         : Array.from({ length: 12 }, (_, i) => i + 1).map((x) => (
