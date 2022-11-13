@@ -4,7 +4,7 @@ import LoginForm from '../LoginForm/LoginForm';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { open } from '../../snackbarSlice';
+import { open } from '../../snackBarSlice';
 
 function Login() {
   const dispatch = useDispatch();
