@@ -33,7 +33,7 @@ function qtyTotal(items) {
 }
 
 function total(items) {
-  return items?.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  return items?.map(({ price }) => price).reduce((sum, i) => sum + i, 0) || 0;
 }
 
 function PaymentTable({ list }) {
@@ -55,13 +55,13 @@ function PaymentTable({ list }) {
             <TableRow>
               <TableCell>Sản phẩm</TableCell>
               <TableCell align="right">Số lượng</TableCell>
-              <TableCell align="right">Giá tiền</TableCell>
+              <TableCell align="right">Đơn giá</TableCell>
               <TableCell align="right">Tổng tiền</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows?.map((row, index) => (
-              <TableRow key={index + row.qty}>
+              <TableRow key={`${index}${row.qty}`}>
                 <TableCell>{row.desc}</TableCell>
                 <TableCell align="right">{row.qty}</TableCell>
                 <TableCell align="right">{formatter.format(row.unit)} </TableCell>
