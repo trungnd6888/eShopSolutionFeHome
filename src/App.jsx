@@ -34,11 +34,8 @@ function App() {
 
   const fetchTotalQuantityCart = () => {
     const cartList = JSON.parse(localStorage.getItem('cart'));
-    if (!cartList) return;
-
-    const totalQuantity = cartList
-      .map((x) => x.quantity)
-      .reduce((pre, current) => pre + current, 0);
+    const quantityList = cartList?.map((x) => x.quantity) || [];
+    const totalQuantity = quantityList.reduce((pre, current) => pre + current, 0);
 
     setTotalQuantityCart(totalQuantity);
   };

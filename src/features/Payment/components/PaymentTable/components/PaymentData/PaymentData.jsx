@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Stack, Typography } from '@mui/material';
-import paymentImage from '../../../../../../../images/poster01.png';
 import { STORAGE_IMAGE } from '../../../../../../constants/common';
 
 PaymentData.propTypes = {
@@ -27,7 +26,7 @@ function PaymentData({ data }) {
     <Stack direction="row" spacing={2}>
       <img
         width={90}
-        height="100%"
+        height={90}
         style={{ objectFit: 'cover' }}
         src={getPaymentPathImageTheFirst(data?.images)}
       />
@@ -35,8 +34,8 @@ function PaymentData({ data }) {
         <Typography variant="caption" sx={{ textTransform: 'uppercase' }}>
           {data.name}
         </Typography>
-        <Typography variant="caption">{`Mã: ${data.code}`}</Typography>
-        <Typography variant="caption">{`Thông tin: ${data.detail}`}</Typography>
+        <Typography variant="caption">Mã: {data.code}</Typography>
+        <Typography variant="caption">Thông tin: {data.detail}</Typography>
       </Stack>
     </Stack>
   );
