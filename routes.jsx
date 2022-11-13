@@ -16,6 +16,11 @@ import Search from './src/features/Search/pages/Search/Search';
 import Profile from './src/features/Profile/pages/Profile/Profile';
 import Login from './src/features/Auth/components/Login/Login';
 import Register from './src/features/Auth/components/Register/Register';
+import PaymentSuccess from './src/features/Payment/components/PaymentSuccess/PaymentSuccess';
+import ForgotPassword from './src/features/Auth/components/ForgotPassword/ForgotPassword';
+import RegisterSuccess from './src/features/Auth/components/RegisterSuccess/RegisterSuccess';
+import ResetPassword from './src/features/Auth/components/ResetPassword/ResetPassword';
+import ResetPasswordSuccess from './src/features/Auth/components/ResetPasswordSuccess/ResetPasswordSuccess';
 
 Router.propTypes = {
   onTotalQuantityCart: PropTypes.func,
@@ -68,7 +73,16 @@ function Router({ onTotalQuantityCart }) {
             },
             {
               path: 'payment',
-              element: <Payment />,
+              children: [
+                {
+                  index: true,
+                  element: <Payment onTotalQuantityCart={handleTotalQuantityCart} />,
+                },
+                {
+                  path: 'paymentsuccess',
+                  element: <PaymentSuccess />,
+                },
+              ],
             },
           ],
         },
@@ -88,7 +102,41 @@ function Router({ onTotalQuantityCart }) {
       ],
     },
     { path: 'login', element: <Login /> },
-    { path: 'register', element: <Register /> },
+    {
+      path: 'register',
+      children: [
+        {
+          index: true,
+          element: <Register />,
+        },
+        {
+          path: 'success',
+          element: <RegisterSuccess />,
+        },
+      ],
+    },
+    {
+      path: 'forgotpassword',
+      children: [
+        {
+          index: true,
+          element: <ForgotPassword />,
+        },
+        {
+          path: 'reset',
+          children: [
+            {
+              index: true,
+              element: <ResetPassword />,
+            },
+            {
+              path: 'success',
+              element: <ResetPasswordSuccess />,
+            },
+          ],
+        },
+      ],
+    },
     {
       path: '404',
       element: <NotFound />,

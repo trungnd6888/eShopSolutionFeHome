@@ -1,33 +1,127 @@
 import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import PropTypes from 'prop-types';
 
-PaymentInfo.propTypes = {};
+PaymentInfo.propTypes = {
+  onSubmit: PropTypes.func,
+};
 
-function PaymentInfo(props) {
+PaymentInfo.defaultValues = {
+  onSubmit: null,
+};
+
+function PaymentInfo({ onSubmit }) {
+  const schema = yup
+    .object()
+    .shape({
+      name: yup.string().required('Vui lòng nhập tên khách hàng'),
+      email: yup.string().email('Vui lòng nhập đúng định dạng email'),
+      address: yup.string(),
+      tel: yup.string().required('Vui lòng nhập điện thoại'),
+    })
+    .required();
+
   const [value, setValue] = React.useState(false);
+  const initialValues = {
+    name: '',
+    tel: '',
+    address: '',
+    email: '',
+  };
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm({
+    defaultValues: initialValues,
+    resolver: yupResolver(schema),
+  });
+
+  const handleOnSubmit = (values) => {
+    if (onSubmit) onSubmit(values);
+  };
 
   return (
-    <Paper sx={{ p: 3 }}>
+    <Paper component="form" onSubmit={handleSubmit(handleOnSubmit)} sx={{ p: 3 }}>
       <Typography sx={{ display: 'block', mb: 4 }} variant="button">
         Thông tin thanh toán
       </Typography>
       <Stack spacing={2}>
-        <TextField name="name" variant="outlined" label="Họ tên" size="small"></TextField>
-        <TextField name="email" variant="outlined" label="Email" size="small"></TextField>
-        <TextField name="tel" variant="outlined" label="Điện thoại" size="small"></TextField>
-        <TextField
+        <Controller
+          control={control}
+          name="name"
+          render={({ field: { name, value, onChange } }) => (
+            <TextField
+              name={name}
+              value={value}
+              onChange={onChange}
+              variant="outlined"
+              label="Họ tên *"
+              size="small"
+              error={!!errors[name]}
+              helperText={errors[name]?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { name, value, onChange } }) => (
+            <TextField
+              name={name}
+              value={value}
+              onChange={onChange}
+              variant="outlined"
+              label="Email"
+              size="small"
+              error={!!errors[name]}
+              helperText={errors[name]?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="tel"
+          render={({ field: { name, value, onChange } }) => (
+            <TextField
+              name={name}
+              value={value}
+              onChange={onChange}
+              variant="outlined"
+              label="Điện thoại *"
+              size="small"
+              error={!!errors[name]}
+              helperText={errors[name]?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
           name="address"
-          variant="outlined"
-          multiline
-          rows={3}
-          label="Địa chỉ"
-          size="small"
-        ></TextField>
+          render={({ field: { name, value, onChange } }) => (
+            <TextField
+              name={name}
+              value={value}
+              onChange={onChange}
+              variant="outlined"
+              multiline
+              rows={3}
+              label="Địa chỉ"
+              size="small"
+              error={!!errors[name]}
+              helperText={errors[name]?.message}
+            />
+          )}
+        />
+
         <FormControl>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
@@ -55,7 +149,7 @@ function PaymentInfo(props) {
             <TextField name="date" variant="outlined" label="Ngày hết hạn" size="small"></TextField>
           </>
         )}
-        <Button variant="contained" component={Link} to="/home">
+        <Button variant="contained" type="submit">
           Đặt hàng
         </Button>
       </Stack>

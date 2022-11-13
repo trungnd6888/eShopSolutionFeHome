@@ -1,17 +1,30 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Button, Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import PaymentHeader from './components/PaymentHeader/PaymentHeader';
 import PaymentInfo from './components/PaymentInfo/PaymentInfo';
 import PaymentTable from './components/PaymentTable/PaymentTable';
 import productApi from '../../api/productApi';
+import orderApi from '../../api/orderApi';
+import { useDispatch } from 'react-redux';
+import { open } from '../Auth/snackBarSlice';
+import { empty } from '../Cart/cartSlice';
+import PropTypes from 'prop-types';
 
-Payment.propTypes = {};
+Payment.propTypes = {
+  onTotalQuantityCart: PropTypes.func,
+};
 
-function Payment(props) {
+Payment.defaultValues = {
+  onTotalQuantityCart: null,
+};
+
+function Payment({ onTotalQuantityCart }) {
   const [list, setList] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCartList();
@@ -29,6 +42,49 @@ function Payment(props) {
     setList(cartList);
   };
 
+  const handleTotalQuantityCart = () => {
+    if (onTotalQuantityCart) onTotalQuantityCart();
+  };
+
+  const handleSubmit = async (values) => {
+    const cartList = JSON.parse(localStorage.getItem('cart'));
+
+    const addValues = {
+      ...values,
+      orderDetails: cartList?.map((x) => ({
+        productId: x.productId,
+        quantity: x.quantity,
+      })),
+    };
+
+    try {
+      await orderApi.add(addValues);
+
+      const snackBarAction = open({
+        status: true,
+        message: 'Đặt hàng thành công',
+        type: 'success',
+      });
+      dispatch(snackBarAction);
+
+      const action = empty();
+      dispatch(action);
+
+      handleTotalQuantityCart();
+
+      navigate('paymentsuccess');
+    } catch (error) {
+      console.log('Fail to add order: ', error);
+
+      const snackBarAction = open({
+        status: true,
+        message: 'Đặt hàng không thành công',
+        type: 'error',
+      });
+      dispatch(snackBarAction);
+    }
+  };
+
   return (
     <Container>
       <Grid container spacing={3}>
@@ -43,7 +99,7 @@ function Payment(props) {
           </Button>
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
-          <PaymentInfo />
+          <PaymentInfo onSubmit={handleSubmit} />
         </Grid>
       </Grid>
     </Container>
