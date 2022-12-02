@@ -32,7 +32,6 @@ axiosClient.interceptors.response.use(
     const urlList = ['/auth/authenticate', '/auth/register'];
 
     if (urlList.includes(config?.url) && status == 401) {
-      // throw new Error(data.error);
       throw new Error(data.error);
     }
 
