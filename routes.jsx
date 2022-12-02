@@ -21,6 +21,9 @@ import ForgotPassword from './src/features/Auth/components/ForgotPassword/Forgot
 import RegisterSuccess from './src/features/Auth/components/RegisterSuccess/RegisterSuccess';
 import ResetPassword from './src/features/Auth/components/ResetPassword/ResetPassword';
 import ResetPasswordSuccess from './src/features/Auth/components/ResetPasswordSuccess/ResetPasswordSuccess';
+import { STORAGE_USER } from './src/constants/common';
+import NotRole from './src/components/NotRole/pages/NotRole/NotRole';
+import { useSelector } from 'react-redux';
 
 Router.propTypes = {
   onTotalQuantityCart: PropTypes.func,
@@ -31,6 +34,27 @@ Router.defaultValues = {
 };
 
 function Router({ onTotalQuantityCart }) {
+  const user = useSelector((state) => state.auth).current;
+
+  const getCheckLogin = (user) => {
+    if (!user) return false;
+
+    let isExpired = false;
+    let isLogin = false;
+
+    const dateNow = new Date();
+    if (user.exp * 1000 < dateNow.getTime()) isExpired = true;
+
+    isLogin = !isExpired;
+
+    return isLogin;
+  };
+  const isLogin = getCheckLogin(user);
+
+  const isRoleClaim = (claimType, claimValue) => {
+    return user[claimType]?.includes(claimValue);
+  };
+
   const handleTotalQuantityCart = () => {
     if (onTotalQuantityCart) onTotalQuantityCart();
   };
@@ -46,7 +70,10 @@ function Router({ onTotalQuantityCart }) {
 
       //Outlet
       children: [
-        { path: 'profile', element: <Profile /> },
+        {
+          path: 'profile',
+          element: isLogin && isRoleClaim('profile', 'profile.view') ? <Profile /> : <NotRole />,
+        },
         { path: 'search', element: <Search /> },
         { path: 'contact', element: <Contact /> },
         { path: 'aboutUs', element: <AboutUs /> },
