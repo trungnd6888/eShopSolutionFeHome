@@ -25,7 +25,7 @@ function Login() {
       dispatch(actionSnackbar);
 
       console.log('Login is success');
-      navigate('/dashboard/dashboard');
+      navigate('/home');
     } catch (error) {
       let message;
       switch (error.message) {

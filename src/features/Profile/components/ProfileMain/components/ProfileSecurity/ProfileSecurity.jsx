@@ -1,50 +1,50 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, Button, Grid, TextField, Paper } from '@mui/material';
+import authApi from '../../../../../../api/authApi';
+import ProfileSecurityForm from './ProfileSecurityForm/ProfileSecurityForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { open } from '../../../../../Auth/snackBarSlice';
+import { STORAGE_USER } from '../../../../../../constants/common';
 
 ProfileSecurity.propTypes = {};
 
 function ProfileSecurity(props) {
-  return (
-    <Paper sx={{ p: 3 }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            type="password"
-            size="small"
-            defaultValue="123456"
-            label="Mật khẩu cũ"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            type="password"
-            size="small"
-            defaultValue="123456"
-            label="Mật khẩu mới"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            type="password"
-            size="small"
-            defaultValue="123456"
-            label="Xác nhận mật khẩu"
-          />
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <Box sx={{ textAlign: 'right' }}>
-            <Button sx={{ maxWidth: 120 }} size="small" variant="contained">
-              Cập nhật
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </Paper>
-  );
+  const user = useSelector((state) => state.auth).current;
+  const userId = user[STORAGE_USER.ID];
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (values, handleResetForm) => {
+    try {
+      const data = { ...values, userId: userId };
+
+      await authApi.changePassword(data);
+
+      const actionSnackbar = open({
+        status: true,
+        message: 'Cập nhật mật khẩu thành công',
+        type: 'success',
+      });
+      dispatch(actionSnackbar);
+
+      console.log('Change password success');
+
+      handleResetForm();
+    } catch (error) {
+      let message = 'Cập nhật mật khẩu không thành công';
+      const errorList = error.response.data.error?.map((x) => x.code);
+      if (errorList.includes('PasswordMismatch')) message = 'Mật khẩu cũ chưa đúng';
+
+      const actionSnackbar = open({
+        status: true,
+        message: message,
+        type: 'error',
+      });
+      dispatch(actionSnackbar);
+
+      console.log('Fail to change password', error);
+    }
+  };
+
+  return <ProfileSecurityForm onSubmit={handleSubmit} />;
 }
 
 export default ProfileSecurity;

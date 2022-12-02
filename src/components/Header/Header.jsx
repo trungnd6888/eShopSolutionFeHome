@@ -16,9 +16,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { STORAGE_CONST } from '../../constants/common';
+import { STORAGE_CONST, STORAGE_USER } from '../../constants/common';
 import { openDrawer } from '../../layouts/drawerSlice';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import KeyIcon from '@mui/icons-material/Key';
+import { PropTypes } from 'prop-types';
+
+Header.propTypes = {
+  onLogout: PropTypes.func,
+};
+
+Header.defaultValues = {
+  onLogout: null,
+};
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,22 +70,52 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header() {
+export default function Header({ onLogout }) {
   const drawer = useSelector((state) => state.drawer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const initValue = location.pathname === '/search' ? searchParams.get('q') : '';
+  const user = useSelector((state) => state.auth).current;
 
+  const getCheckLogin = (user) => {
+    if (!user) return { isLogin: false, roleList: [] };
+
+    let isExpired = false;
+    let isLogin = false;
+    let roleList = [];
+
+    const dateNow = new Date();
+    if (user.exp * 1000 < dateNow.getTime()) isExpired = true;
+
+    isLogin = !isExpired;
+    roleList = user[STORAGE_USER.ROLE] || [];
+
+    return { isLogin: !isExpired, roleList: user[STORAGE_USER.ROLE] || [] };
+  };
+
+  const { isLogin, roleList } = getCheckLogin(user);
+
+  const [loginAnchorEl, setLoginAnchorEl] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+  const isLoginMenuOpen = Boolean(loginAnchorEl);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const handleLogout = () => {
+    if (onLogout) onLogout();
+    handleMenuClose();
+  };
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleLoginMenuOpen = (event) => {
+    setLoginAnchorEl(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
@@ -87,9 +127,39 @@ export default function Header() {
     handleMobileMenuClose();
   };
 
+  const handleLoginMenuClose = () => {
+    setLoginAnchorEl(null);
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const loginMenuId = 'primary-login-account-menu';
+  const renderLoginMenu = (
+    <Menu
+      anchorEl={loginAnchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={loginMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isLoginMenuOpen}
+      onClose={handleLoginMenuClose}
+    >
+      <MenuItem component={Link} to="/login" onClick={handleLoginMenuClose}>
+        Đăng nhập
+      </MenuItem>
+      <MenuItem component={Link} to="/register" onClick={handleLoginMenuClose}>
+        Đăng ký
+      </MenuItem>
+    </Menu>
+  );
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -111,12 +181,7 @@ export default function Header() {
       <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>
         Thông tin
       </MenuItem>
-      <MenuItem component={Link} onClick={handleMenuClose}>
-        Cài đặt
-      </MenuItem>
-      <MenuItem component={Link} onClick={handleMenuClose}>
-        Đăng xuất
-      </MenuItem>
+      <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
     </Menu>
   );
 
@@ -238,43 +303,59 @@ export default function Header() {
             </Search>
             <Box sx={{ flexGrow: 1 }} />
           </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+          {isLogin ? (
+            <>
+              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="error">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
+                  <Badge badgeContent={17} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Box>
+              <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                <IconButton
+                  size="large"
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </Box>
+            </>
+          ) : (
             <IconButton
               size="large"
               edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
               color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
+              aria-controls={loginMenuId}
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
+              onClick={handleLoginMenuOpen}
             >
-              <MoreIcon />
+              <KeyIcon />
             </IconButton>
-          </Box>
+          )}
         </Toolbar>
       </AppBar>
+      {renderLoginMenu}
       {renderMobileMenu}
       {renderMenu}
     </Box>

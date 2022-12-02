@@ -1,11 +1,13 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
-import { Outlet } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import SideBar from '../../components/SideBar/SideBar';
 import SideBarMobile from '../../components/SideBarMobile/SideBarMobile';
 import { STORAGE_CONST } from '../../constants/common';
+import { logout } from '../../features/Auth/authSlice';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -17,9 +19,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function Layout() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    const action = logout();
+    dispatch(action);
+
+    navigate('/home');
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
-      <Header />
+      <Header onLogout={handleLogout} />
       <SideBar />
       <SideBarMobile />
       <Box
