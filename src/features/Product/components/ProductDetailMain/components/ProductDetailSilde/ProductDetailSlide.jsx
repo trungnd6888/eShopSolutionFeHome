@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import detailImage from '../../../../../../../images/banner01.jpg';
-import detailImage01 from '../../../../../../../images/poster01.png';
+import React, { useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
-import 'swiper/css/thumbs';
 import 'swiper/css/pagination';
+import 'swiper/css/thumbs';
 import 'swiper/css/zoom';
 import './styles.css';
 
 // import required modules
-import { Zoom, FreeMode, Thumbs, Pagination } from 'swiper';
+import { FreeMode, Pagination, Thumbs, Zoom } from 'swiper';
 import ProductDetailSlideSkeleton from './components/ProductDetailSlideSkeleton/ProductDetailSlideSkeleton';
 
 ProductDetailSlide.propTypes = {
@@ -46,7 +44,7 @@ export default function ProductDetailSlide({ product }) {
             {product?.images?.map((image) => (
               <SwiperSlide key={image.id}>
                 <div className="swiper-zoom-container">
-                  <img height={380} src={`https://localhost:7095${image.imageUrl}`} />
+                  <img height={380} src={`${import.meta.env.VITE_BASE_URL}${image.imageUrl}`} />
                 </div>
               </SwiperSlide>
             ))}
@@ -63,7 +61,7 @@ export default function ProductDetailSlide({ product }) {
           >
             {product?.images?.map((image) => (
               <SwiperSlide key={image.id}>
-                <img src={`https://localhost:7095${image.imageUrl}`} />
+                <img src={`${import.meta.env.VITE_BASE_URL}${image.imageUrl}`} />
               </SwiperSlide>
             ))}
           </Swiper>

@@ -71,7 +71,7 @@ function ProfileForm({ user, onSubmit }) {
   };
 
   const getUrlImage = (path) => {
-    return path ? `https://localhost:7095${path}` : '';
+    return path ? `${import.meta.env.VITE_BASE_URL}${path}` : '';
   };
 
   useEffect(() => {

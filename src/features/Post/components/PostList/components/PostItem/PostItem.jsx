@@ -1,16 +1,15 @@
-import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import { Button, CardActionArea, CardActions, Box } from '@mui/material';
+import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
+import { Box, Button, CardActionArea, CardActions } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
+import { PropTypes } from 'prop-types';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { PropTypes } from 'prop-types';
-import postImage from '../../../../../../../images/post01.jpg';
 import { STORAGE_IMAGE } from '../../../../../../constants/common';
 import { getTitleSlice } from '../../../../../../utils/common';
 
@@ -33,7 +32,7 @@ const CustomizeTypography = styled(Typography)({
 export default function PostItem({ item }) {
   const getPathImage = (url) => {
     const path = item.imageUrl
-      ? `https://localhost:7095${item.imageUrl}`
+      ? `${import.meta.env.VITE_BASE_URL}${item.imageUrl}`
       : STORAGE_IMAGE.PRODUCT_THUMBNAI;
     return path;
   };
