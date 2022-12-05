@@ -54,7 +54,9 @@ export default function Item({ item, onTotalQuantityCart }) {
 
   const getPathImageTheFirst = (imageList) => {
     const image = imageList?.find((x) => x.sortOrder === 0);
-    const path = image ? `https://localhost:7095${image.imageUrl}` : STORAGE_IMAGE.PRODUCT_THUMBNAI;
+    const path = image
+      ? `${import.meta.env.VITE_BASE_URL}${image.imageUrl}`
+      : STORAGE_IMAGE.PRODUCT_THUMBNAI;
     return path;
   };
 

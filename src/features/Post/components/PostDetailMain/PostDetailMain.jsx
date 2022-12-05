@@ -1,13 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Avatar, Box, Container, Paper, Stack, Typography } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
-import PostDetailShareButton from './components/PostDetailShareButton/PostDetailShareButton';
-import postImage from '../../../../../images/post01.jpg';
-import avatarImage from '../../../../../images/avatar.jpg';
-import { STORAGE_IMAGE } from '../../../../constants/common';
 import { styled } from '@mui/system';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { STORAGE_IMAGE } from '../../../../constants/common';
 import { getTitleSlice } from '../../../../utils/common';
+import PostDetailShareButton from './components/PostDetailShareButton/PostDetailShareButton';
 
 PostDetailMain.propTypes = {
   post: PropTypes.object,
@@ -26,7 +24,7 @@ const CustomizeDiv = styled(Box)({
 });
 
 const getPathImage = (url) => {
-  return url ? `https://localhost:7095${url}` : STORAGE_IMAGE.PRODUCT_THUMBNAI;
+  return url ? `${import.meta.env.VITE_BASE_URL}${url}` : STORAGE_IMAGE.PRODUCT_THUMBNAI;
 };
 
 const getPathAvatar = (url) => {
