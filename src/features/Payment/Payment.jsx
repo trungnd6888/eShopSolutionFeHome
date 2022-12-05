@@ -8,10 +8,11 @@ import PaymentInfo from './components/PaymentInfo/PaymentInfo';
 import PaymentTable from './components/PaymentTable/PaymentTable';
 import productApi from '../../api/productApi';
 import orderApi from '../../api/orderApi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { open } from '../Auth/snackBarSlice';
 import { empty } from '../Cart/cartSlice';
 import PropTypes from 'prop-types';
+import { STORAGE_USER } from '../../constants/common';
 
 Payment.propTypes = {
   onTotalQuantityCart: PropTypes.func,
@@ -25,6 +26,8 @@ function Payment({ onTotalQuantityCart }) {
   const [list, setList] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth).current;
+  const userId = user[STORAGE_USER.ID] || null;
 
   useEffect(() => {
     fetchCartList();
@@ -51,6 +54,7 @@ function Payment({ onTotalQuantityCart }) {
 
     const addValues = {
       ...values,
+      userId: userId,
       orderDetails: cartList?.map((x) => ({
         productId: x.productId,
         quantity: x.quantity,

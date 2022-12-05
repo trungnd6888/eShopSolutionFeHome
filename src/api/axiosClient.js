@@ -2,8 +2,7 @@ import axios from 'axios';
 import { STORAGE_CONST } from '../constants/common';
 
 const axiosClient = axios.create({
-  baseURL: 'https://localhost:7095/api/public',
-  // baseURL: 'http://192.168.1.5:8000/api/public',
+  baseURL: import.meta.env.VITE_API_URL,
   header: {
     'Content-Type': 'application/json',
   },

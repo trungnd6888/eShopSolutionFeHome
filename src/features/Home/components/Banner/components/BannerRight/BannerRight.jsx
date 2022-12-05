@@ -56,7 +56,7 @@ function BannerRight({ list }) {
                 <CustomizeBox
                   src={
                     item.imageUrl
-                      ? `https://localhost:7095/${item.imageUrl}`
+                      ? `${import.meta.env.VITE_BASE_URL}${item.imageUrl}`
                       : STORAGE_IMAGE.PRODUCT_THUMBNAI
                   }
                 />

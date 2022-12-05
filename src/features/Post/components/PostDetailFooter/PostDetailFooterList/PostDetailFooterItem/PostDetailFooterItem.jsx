@@ -7,10 +7,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import postImage from '../../../../../../../images/post01.jpg';
-import PropTypes from 'prop-types';
 import { STORAGE_IMAGE } from '../../../../../../constants/common';
 import { getTitleSlice } from '../../../../../../utils/common';
 
@@ -33,7 +32,7 @@ const CustomizeTypography = styled(Typography)({
 export default function PostDetailFooterItem({ item }) {
   const getPathImage = (url) => {
     const path = item.imageUrl
-      ? `https://localhost:7095${item.imageUrl}`
+      ? `${import.meta.env.VITE_BASE_URL}${item.imageUrl}`
       : STORAGE_IMAGE.PRODUCT_THUMBNAI;
     return path;
   };
