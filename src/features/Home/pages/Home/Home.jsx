@@ -64,7 +64,7 @@ function Home({ onTotalQuantityCart }) {
       />
       <ListItem
         onTotalQuantityCart={handleTotalQuantityCart}
-        list={list?.filter((x) => !x.isNew && !x.isBestSale)}
+        list={list?.filter((x) => x.isNew && x.isBestSale)}
         title="Sản phẩm nổi bật"
       />
     </Box>
