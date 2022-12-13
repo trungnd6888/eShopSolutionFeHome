@@ -28,7 +28,7 @@ const getPathImage = (url) => {
 };
 
 const getPathAvatar = (url) => {
-  return `https://localhost:7095${url}`;
+  return `${import.meta.env.VITE_BASE_URL}${url}`;
 };
 
 const getDateString = (date) => {

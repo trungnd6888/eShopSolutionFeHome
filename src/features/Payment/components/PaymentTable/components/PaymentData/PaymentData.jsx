@@ -17,7 +17,7 @@ function PaymentData({ data }) {
     if (!image) return STORAGE_IMAGE.PRODUCT_THUMBNAI;
 
     const url = image.imageUrl;
-    const path = `https://localhost:7095${url}`;
+    const path = `${import.meta.env.VITE_BASE_URL}${url}`;
 
     return path;
   };

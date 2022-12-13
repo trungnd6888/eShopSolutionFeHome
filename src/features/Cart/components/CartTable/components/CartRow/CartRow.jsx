@@ -62,7 +62,7 @@ function CartRow({ onFetchList, item }) {
     if (!image) return STORAGE_IMAGE.PRODUCT_THUMBNAI;
 
     const url = image.imageUrl;
-    const path = url ? `https://localhost:7095/${url}` : STORAGE_IMAGE.PRODUCT_THUMBNAI;
+    const path = url ? `${import.meta.env.VITE_BASE_URL}${url}` : STORAGE_IMAGE.PRODUCT_THUMBNAI;
 
     return path;
   };
