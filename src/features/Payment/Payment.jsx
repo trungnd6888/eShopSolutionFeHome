@@ -27,7 +27,23 @@ function Payment({ onTotalQuantityCart }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth).current;
-  const userId = user[STORAGE_USER.ID] || null;
+
+  const getCheckLogin = (user) => {
+    if (!user) return false;
+
+    let isExpired = false;
+    let isLogin = false;
+
+    const dateNow = new Date();
+    if (user.exp * 1000 < dateNow.getTime()) isExpired = true;
+
+    isLogin = !isExpired;
+
+    return isLogin;
+  };
+
+  const isLogin = getCheckLogin(user);
+  const userId = isLogin ? user[STORAGE_USER.ID] : null;
 
   useEffect(() => {
     fetchCartList();
