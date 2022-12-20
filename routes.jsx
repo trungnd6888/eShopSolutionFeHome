@@ -1,29 +1,28 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate, useRoutes } from 'react-router-dom';
-import Home from './src/features/Home/pages/Home/Home';
-import Product from './src/features/Product/pages/Product/Product';
-import Layout from './src/layouts/Layout/Layout';
-import ProductDetail from './src/features/Product/pages/ProductDetail/ProductDetail';
-import Cart from './src/features/Cart/Cart';
-import Payment from './src/features/Payment/Payment';
-import Post from './src/features/Post/pages/Post/Post';
-import PostDetail from './src/features/Post/pages/PostDetail/PostDetail';
 import NotFound from './src/components/NotFound/NotFound';
+import NotRole from './src/components/NotRole/pages/NotRole/NotRole';
 import AboutUs from './src/features/AboutUs/pages/AboutUs/AboutUs';
-import Contact from './src/features/Contact/pages/Contact/Contact';
-import Search from './src/features/Search/pages/Search/Search';
-import Profile from './src/features/Profile/pages/Profile/Profile';
+import ForgotPassword from './src/features/Auth/components/ForgotPassword/ForgotPassword';
 import Login from './src/features/Auth/components/Login/Login';
 import Register from './src/features/Auth/components/Register/Register';
-import PaymentSuccess from './src/features/Payment/components/PaymentSuccess/PaymentSuccess';
-import ForgotPassword from './src/features/Auth/components/ForgotPassword/ForgotPassword';
 import RegisterSuccess from './src/features/Auth/components/RegisterSuccess/RegisterSuccess';
 import ResetPassword from './src/features/Auth/components/ResetPassword/ResetPassword';
 import ResetPasswordSuccess from './src/features/Auth/components/ResetPasswordSuccess/ResetPasswordSuccess';
-import { STORAGE_USER } from './src/constants/common';
-import NotRole from './src/components/NotRole/pages/NotRole/NotRole';
-import { useSelector } from 'react-redux';
+import Cart from './src/features/Cart/Cart';
+import Contact from './src/features/Contact/pages/Contact/Contact';
+import Home from './src/features/Home/pages/Home/Home';
+import PaymentSuccess from './src/features/Payment/components/PaymentSuccess/PaymentSuccess';
+import Payment from './src/features/Payment/Payment';
+import Post from './src/features/Post/pages/Post/Post';
+import PostDetail from './src/features/Post/pages/PostDetail/PostDetail';
+import Product from './src/features/Product/pages/Product/Product';
+import ProductDetail from './src/features/Product/pages/ProductDetail/ProductDetail';
+import Profile from './src/features/Profile/pages/Profile/Profile';
+import Search from './src/features/Search/pages/Search/Search';
+import Layout from './src/layouts/Layout/Layout';
 
 Router.propTypes = {
   onTotalQuantityCart: PropTypes.func,
